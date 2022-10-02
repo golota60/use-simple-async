@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/golota60/use-simple-async/compare/v1.0.4...v1.1.0) (2022-10-02)
+
+
+### Features
+
+* add refetch + better behavior + tests ([a41bddb](https://github.com/golota60/use-simple-async/commit/a41bddb6c088575bbdada00d01c760df266133f9))
+
 ### [1.0.4](https://github.com/golota60/use-simple-async/compare/v1.0.3...v1.0.4) (2022-10-02)
 
 
