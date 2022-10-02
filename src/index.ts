@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 interface FuncMeta {
   loading: boolean;
   error: unknown;
+  retry: () => void;
 }
 
 /**
@@ -13,34 +14,52 @@ interface FuncMeta {
  *
  * @returns [data, {loading, error}]
  */
-const useSimpleAsync = <T>(
-  asyncFunc: () => Promise<T>,
-  options: { skip?: boolean } = { skip: false }
+const useSimpleAsync = <T, V>(
+  asyncFunc: (variables?: V) => Promise<T>,
+  options: { skip?: boolean; variables?: V } = {
+    skip: false,
+    variables: undefined,
+  }
 ): [T | undefined, FuncMeta] => {
   const [loading, setLoading] = useState<boolean>(false);
   const [data, setData] = useState<T | undefined>();
   const [error, setError] = useState<unknown>();
 
-  useEffect(() => {
-    (async () => {
-      try {
-        if (!options.skip) {
-          setLoading(true);
-          const newData = await asyncFunc();
-          setData(newData);
-        }
-      } catch (e: any) {
-        setError(e);
-        setData(undefined);
-        // eslint-disable-next-line no-console
-        console.error("Error while resolving async function", e);
-      } finally {
-        setLoading(false);
+  const cb = useCallback(async () => {
+    return await asyncFunc(options?.variables);
+  }, [options.variables]);
+
+  const exec = async () => {
+    try {
+      if (!options.skip) {
+        setLoading(true);
+        const newData = await cb();
+        setData(newData);
       }
-    })();
+    } catch (e: any) {
+      setError(e);
+      setData(undefined);
+      // eslint-disable-next-line no-console
+      console.error("Error while resolving async function", e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    exec();
   }, [asyncFunc, options.skip]);
 
-  return [data, { loading, error }];
+  return [
+    data,
+    {
+      loading,
+      error,
+      retry: () => {
+        exec();
+      },
+    },
+  ];
 };
 
 export default useSimpleAsync;

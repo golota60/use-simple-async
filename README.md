@@ -43,6 +43,69 @@ const App = () => {
 };
 ```
 
+### Refetching
+
+Hook will automatically refetch when you change the function you provide to `useSimpleAsync`.
+A simple recipe for e.g. fetching data with different variables would look like this:
+
+```ts
+import useSimpleAsync from "use-simple-async";
+
+interface InputType {
+  name: string;
+  id: string;
+}
+
+interface ReturnType {
+  returnValue: string;
+}
+
+const fetchSomeData = async (
+  variables: InputType
+): Promise<Array<ReturnType>> => {
+  const req = await fetch("/api/", {
+    method: "POST",
+    body: JSON.stringify(variables),
+  });
+  const data = await req.json();
+  return data as Array<ReturnType>;
+};
+
+const App = () => {
+  const [variables, setVariables] = useState<InputType>({
+    name: "initialName",
+    id: "123",
+  });
+
+  // Option one(recommended, easier): Let the hook handle variables
+  const [data, { loading, error }] = useSimpleAsync(fetchSomeData, {
+    variables,
+  });
+
+  // Option two: Handle everything yourself
+  const fetchData = useCallback(() => fetchSomeData(variables), [variables]); // useCallback is important here!
+  const [data, { loading, error }] = useSimpleAsync(fetchData);
+
+  const handleChangeVariables = () => {
+    setVariables({ name: "updatedName", id: "456" });
+  };
+
+  if (loading) {
+    return <div>loading...</div>;
+  }
+  if (error) {
+    return <div>Something went wrong.</div>;
+  }
+
+  return (
+    <div>
+      {data?.map((e) => e.returnValue)}
+      <button onClick={handleChangeVariables}>change variables</button>
+    </div>
+  );
+};
+```
+
 ### Submitting errors
 
 If you see that something is not working for you or you'd like it to work differently, please don't hesistate to open a issue!
