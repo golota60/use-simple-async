@@ -19,7 +19,7 @@
   "scripts": {
     "build": "rimraf dist && tsup src/index.ts --dts",
     "build:release": "rimraf dist && tsup src/index.ts --dts --minify",
-    "release": "yarn build:release && standard-version",
+    "release": "yarn build:release && standard-version && cp package.json dist && yarn publish dist && rimraf dist",
     "test": "jest"
   },
   "devDependencies": {
