@@ -24,20 +24,13 @@ yarn add use-simple-async
 import useSimpleAsync from "use-simple-async";
 import fs from "filesystem";
 
-const getIOData = async () => {
-  const fileList = await fs.readDir("/"); // [{name: string, path: string}]
-  return fileList;
-};
+const getIOData = async () => await fs.readDir("/"); // [{name: string, path: string}]
 
 const App = () => {
   const [data, { loading, error }] = useSimpleAsync(getIOData);
 
-  if (loading) {
-    return <div>loading...</div>;
-  }
-  if (error) {
-    return <div>Something went wrong.</div>;
-  }
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Something went wrong.</div>;
 
   return <div>{data.map((e) => e.name)}</div>;
 };
@@ -51,55 +44,29 @@ A simple recipe for e.g. fetching data with different variables would look like 
 ```ts
 import useSimpleAsync from "use-simple-async";
 
-interface InputType {
-  name: string;
-  id: string;
-}
-
-interface ReturnType {
-  returnValue: string;
-}
-
-const fetchSomeData = async (
-  variables: InputType
-): Promise<Array<ReturnType>> => {
-  const req = await fetch("/api/", {
-    method: "POST",
-    body: JSON.stringify(variables),
-  });
-  const data = await req.json();
-  return data as Array<ReturnType>;
-};
-
 const App = () => {
-  const [variables, setVariables] = useState<InputType>({
-    name: "initialName",
-    id: "123",
-  });
+  const [variables, setVariables] = useState({ input: "hello" });
 
   // Option one(recommended, easier): Let the hook handle variables
   const [data, { loading, error }] = useSimpleAsync(fetchSomeData, {
     variables,
   });
+  // ---
 
   // Option two: Handle everything yourself
   const fetchData = useCallback(() => fetchSomeData(variables), [variables]); // useCallback is important here!
   const [data, { loading, error }] = useSimpleAsync(fetchData);
+  // ---
 
   const handleChangeVariables = () => {
-    setVariables({ name: "updatedName", id: "456" });
+    setVariables({ input: "world!" });
   };
 
-  if (loading) {
-    return <div>loading...</div>;
-  }
-  if (error) {
-    return <div>Something went wrong.</div>;
-  }
+  if (loading) return "Loading...";
 
   return (
     <div>
-      {data?.map((e) => e.returnValue)}
+      {data?.output}
       <button onClick={handleChangeVariables}>change variables</button>
     </div>
   );
