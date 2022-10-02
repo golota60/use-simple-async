@@ -15,10 +15,10 @@ interface FuncMeta {
  * @returns [data, {loading, error}]
  */
 const useSimpleAsync = <T, V>(
-  asyncFunc: (variables?: V) => Promise<T>,
-  options: { skip?: boolean; variables?: V } = {
+  asyncFunc: (variables: V) => Promise<T>,
+  options: { skip?: boolean; variables: V } = {
     skip: false,
-    variables: undefined,
+    variables: {} as V,
   }
 ): [T | undefined, FuncMeta] => {
   const [loading, setLoading] = useState<boolean>(false);
