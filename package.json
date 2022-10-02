@@ -1,6 +1,6 @@
 {
   "name": "use-simple-async",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "author": "Szymon Wiszczuk <golota60@gmail.com>",
   "license": "MIT",
   "main": "./index.js",
