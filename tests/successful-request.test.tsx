@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useMemo, useState } from "react";
 import { expect, jest, test } from "@jest/globals";
 import useSimpleAsync from "../src/index";
-import { render, act, waitFor } from "@testing-library/react";
+import { render, act, waitFor, fireEvent } from "@testing-library/react";
 
 const successfulRequest = jest.fn(async (): Promise<string> => {
   return new Promise((resolve) => {
@@ -11,25 +11,25 @@ const successfulRequest = jest.fn(async (): Promise<string> => {
   });
 });
 
-const errorRequest = jest.fn(async (): Promise<unknown> => {
+// Needed to check whether function refetches on request ref change
+const successfulRequest2 = jest.fn(async (): Promise<string> => {
   return new Promise((resolve) => {
     setTimeout(() => {
-      throw new Error("error");
+      resolve("data!");
     }, 500);
   });
 });
 
-const SuccessExample = (func: any) => {
-  const [data, { loading, error }] = useSimpleAsync<any>(successfulRequest);
+const rejectedRequest = jest.fn(async (): Promise<unknown> => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      reject("error");
+    }, 500);
+  });
+});
 
-  if (loading) {
-    return <div>loading</div>;
-  }
-  return <div>{data}</div>;
-};
-
-const ErrorExample = (func: any) => {
-  const [data, { loading, error }] = useSimpleAsync<any>(errorRequest);
+const Example = ({ request }) => {
+  const [data, { loading, error }] = useSimpleAsync<any>(request);
 
   if (loading) {
     return <div>loading</div>;
@@ -40,20 +40,61 @@ const ErrorExample = (func: any) => {
   return <div>{data}</div>;
 };
 
-test("correctly loads and resolves data", () => {
-  const { getByText } = render(<SuccessExample />);
+const RefetchExample = ({ request }) => {
+  const [funcToUseState, setFuncToUseState] = useState(() => successfulRequest);
+  const [data, { loading, error }] = useSimpleAsync<any>(funcToUseState);
+
+  const handleChange = () => {
+    setFuncToUseState(() => successfulRequest2);
+  };
+
+  if (loading) {
+    return <div>loading</div>;
+  }
+  return (
+    <div>
+      {data}
+      <button onClick={handleChange}>click</button>
+    </div>
+  );
+};
+
+test("correctly loads and resolves data", async () => {
+  const { getByText } = render(<Example request={successfulRequest} />);
 
   const loadingElem = getByText("loading");
   expect(loadingElem).toBeDefined();
 
-  waitFor(() => expect(getByText("data!")).toBeDefined());
+  await waitFor(() => expect(getByText("data!")).toBeDefined());
 });
 
-test("correctly loads and resolves errors", () => {
-  const { getByText } = render(<ErrorExample />);
+test("correctly loads and resolves errors", async () => {
+  const { getByText } = render(<Example request={rejectedRequest} />);
 
   const loadingElem = getByText("loading");
   expect(loadingElem).toBeDefined();
 
-  waitFor(() => expect(getByText("something went wrong")).toBeDefined());
+  expect(rejectedRequest).toHaveBeenCalledTimes(1);
+
+  await waitFor(() => expect(getByText("something went wrong")).toBeDefined());
+});
+
+test("refetches on function change", async () => {
+  const { getByText, rerender } = render(
+    <RefetchExample request={successfulRequest} />
+  );
+
+  const loadingElem = getByText("loading");
+  expect(loadingElem).toBeDefined();
+
+  await waitFor(() => expect(getByText("data!")).toBeDefined());
+
+  const button = getByText("click");
+  fireEvent.click(button);
+  rerender(<RefetchExample request={successfulRequest2} />);
+
+  const loadingElem2 = getByText("loading");
+  expect(loadingElem2).toBeDefined();
+
+  await waitFor(() => expect(getByText("data!")).toBeDefined());
 });
