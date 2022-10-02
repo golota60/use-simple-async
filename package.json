@@ -8,6 +8,8 @@
   "publishConfig": {
     "access": "public"
   },
+  "homepage": "https://github.com/golota60/use-simple-async",
+  "repository": "https://github.com/golota60/use-simple-async",
   "keywords": [
     "react",
     "use-async",
