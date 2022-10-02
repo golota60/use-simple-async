@@ -41,6 +41,10 @@ const App = () => {
 };
 ```
 
+### Submitting errors
+
+If you see that something is not working for you or you'd like it to work differently, please don't hesistate to open a issue!
+
 ### Why not use XXX?
 
 - [useSWR](https://swr.vercel.app/) or [react-query](https://www.npmjs.com/package/react-query) - too much features(unnecessarily big bundle), I just want to execute an async function.
