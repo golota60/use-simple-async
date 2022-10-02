@@ -1,0 +1,38 @@
+{
+  "name": "use-simple-async",
+  "version": "1.0.0",
+  "author": "Szymon Wiszczuk <golota60@gmail.com>",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "publishConfig": {
+    "access": "public",
+    "directory": "dist"
+  },
+  "keywords": [
+    "react",
+    "use-async",
+    "use-async-function",
+    "use-async-query",
+    "use-async-resource"
+  ],
+  "scripts": {
+    "build": "rimraf dist && tsup src/index.ts --dts",
+    "build:release": "rimraf dist && tsup src/index.ts --dts --minify",
+    "release": "yarn build:release && standard-version"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.21",
+    "@types/react-dom": "^18.0.6",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "rimraf": "^3.0.2",
+    "standard-version": "^9.5.0",
+    "tsup": "^6.2.3",
+    "typescript": "^4.8.4"
+  },
+  "peerDependencies": {
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0"
+  }
+}
