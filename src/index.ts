@@ -16,14 +16,13 @@ interface FuncMeta {
  */
 const useSimpleAsync = <T, V>(
   asyncFunc: (variables: V) => Promise<T>,
-  options: { skip?: boolean; variables: V } = {
-    skip: false,
-    variables: {} as V,
-  }
+  options?: { skip?: boolean; variables?: V }
 ): [T | undefined, FuncMeta] => {
   const [loading, setLoading] = useState<boolean>(false);
   const [data, setData] = useState<T | undefined>();
   const [error, setError] = useState<unknown>();
+
+  const { skip = false, variables = {} } = options;
 
   const cb = useCallback(async () => {
     return await asyncFunc(options?.variables);
@@ -31,11 +30,9 @@ const useSimpleAsync = <T, V>(
 
   const exec = async () => {
     try {
-      if (!options.skip) {
-        setLoading(true);
-        const newData = await cb();
-        setData(newData);
-      }
+      setLoading(true);
+      const newData = await cb();
+      setData(newData);
     } catch (e: any) {
       setError(e);
       setData(undefined);
@@ -47,7 +44,9 @@ const useSimpleAsync = <T, V>(
   };
 
   useEffect(() => {
-    exec();
+    if (!options.skip) {
+      exec();
+    }
   }, [asyncFunc, options.skip]);
 
   return [
