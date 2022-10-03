@@ -36,8 +36,9 @@ function useSimpleAsync<T, V>(
   const { skip, variables } = options || {};
 
   const cb = useCallback(async () => {
-    const asV = variables as V;
-    return await asyncFunc(asV); // pass variables even when unnecessary
+    return Array.isArray(variables)
+      ? await asyncFunc(...variables)
+      : await asyncFunc(variables);
   }, [variables]);
 
   const exec = async () => {

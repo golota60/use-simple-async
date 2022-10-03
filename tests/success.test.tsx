@@ -47,7 +47,7 @@ test("refetches on prop change", async () => {
   await waitFor(() => expect(getByText("data!")).toBeDefined());
 });
 
-test("types sanity checks", () => {
+test("types sanity checks", async () => {
   // These are just to fail when typescript is off
   const One = () => {
     const [data, meta] = useSimpleAsync(() => new Promise(() => {}));
@@ -70,10 +70,22 @@ test("types sanity checks", () => {
       { variables: ["123"] }
     );
   };
+  const req = jest.fn(async (arg1: string, arg2: { innerArg: string }) => {
+    return new Promise<string>((resolve) => {
+      setTimeout(() => {
+        resolve("data");
+      }, 500);
+    });
+  });
   const Five = () => {
-    const [data3, meta3] = useSimpleAsync(
-      (arg1: string, arg2: { innerArg: string }) => new Promise(() => {}),
-      { variables: ["123", { innerArg: "asd" }] }
-    );
+    const [data3, { loading }] = useSimpleAsync(req, {
+      variables: ["123", { innerArg: "asd" }],
+    });
+    if (loading) return <div>loading</div>;
+    return <div>{data3}</div>;
   };
+  const { getByText } = render(<Five />);
+  expect(getByText("loading")).toBeDefined();
+
+  await waitFor(() => expect(getByText("data")).toBeDefined());
 });
