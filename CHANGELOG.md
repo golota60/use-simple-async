@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.6](https://github.com/golota60/use-simple-async/compare/v1.1.5...v1.1.6) (2022-10-03)
+
+
+### Features
+
+* improve multiple arguments handling ([f2e4926](https://github.com/golota60/use-simple-async/commit/f2e492606394e3d38f5dccc34f44ddd5b13a2e55))
+
 ### [1.1.5](https://github.com/golota60/use-simple-async/compare/v1.1.4...v1.1.5) (2022-10-03)
 
 
