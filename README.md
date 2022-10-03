@@ -24,10 +24,19 @@ yarn add use-simple-async
 import useSimpleAsync from "use-simple-async";
 import fs from "filesystem";
 
-const getIOData = async () => await fs.readDir("/"); // [{name: string, path: string}]
+const getIOData = async (path: string) => await fs.readDir(path); // [{name: string, path: string}]
+const fetchComplexData = (arg1: string, arg: { internalArg: string }) => string;
 
 const App = () => {
-  const [data, { loading, error }] = useSimpleAsync(getIOData);
+  // with one argument
+  const [data, { loading, error }] = useSimpleAsync(getIOData, {
+    variables: "/",
+  });
+  // or - with multiple arguments - all of this is typesafe!
+  const [data, { loading, error }] = useSimpleAsync(fetchComplexData, {
+    variables: ["asd", { internalArg: "asd" }],
+  });
+  // ---
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Something went wrong.</div>;
@@ -39,6 +48,11 @@ const App = () => {
 ### API
 
 ```ts
+function useSimpleAsync<T, V extends Array<any>>(
+  asyncFunc: (...variables: V) => Promise<T>,
+  options: { skip?: boolean; variables: V }
+): [T | undefined, FuncMeta];
+
 function useSimpleAync<T, V>(
   functionToExec: (variables?: V) => Promise<T>,
   options?: { variables?: V; skip?: boolean }
@@ -63,19 +77,21 @@ A simple recipe for e.g. fetching data with different variables would look like 
 ```ts
 import useSimpleAsync from "use-simple-async";
 
+const fetchSimpleData = (arg1: string) => string;
+
 const App = () => {
   const [variables, setVariables] = useState({ input: "hello" });
 
-  // Option one(recommended, easier, for simple uses): Let the hook handle variables
-  const [data, { loading, error }] = useSimpleAsync(fetchSomeData, {
+  // Option one(recommended): Let the hook handle variables
+  const [data, { loading, error }] = useSimpleAsync(fetchSimpleData, {
     variables,
   });
   // ---
 
-  // Option two(for >1 arguments): Handle everything yourself
+  // Option two: Handle everything yourself
   // useCallback is important here!
   const fetchData = useCallback(
-    () => fetchSomeData(var1, var2, var3),
+    () => fetchSimpleData(var1, var2, var3),
     [var1, var2, var3]
   );
   const [data, { loading, error }] = useSimpleAsync(fetchData);

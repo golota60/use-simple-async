@@ -64,4 +64,16 @@ test("types sanity checks", () => {
       { variables: "123" }
     );
   };
+  const Four = () => {
+    const [data3, meta3] = useSimpleAsync(
+      (arg1: string) => new Promise(() => {}),
+      { variables: ["123"] }
+    );
+  };
+  const Five = () => {
+    const [data3, meta3] = useSimpleAsync(
+      (arg1: string, arg2: { innerArg: string }) => new Promise(() => {}),
+      { variables: ["123", { innerArg: "asd" }] }
+    );
+  };
 });
