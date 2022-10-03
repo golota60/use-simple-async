@@ -4,6 +4,7 @@
     "baseUrl": "./src/",
     "lib": ["ES2015", "DOM"],
     "jsx": "react",
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "strict": true
   }
 }
