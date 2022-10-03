@@ -32,6 +32,14 @@ export const successfulRequest = jest.fn(
   }
 );
 
+export const noVarsRequest = jest.fn(async (): Promise<string> => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve("data!");
+    }, 500);
+  });
+});
+
 // Needed to check whether function refetches on request ref change
 export const successfulRequest2 = jest.fn(
   async (vars?: any): Promise<string> => {
