@@ -4,9 +4,13 @@ import useSimpleAsync from "../src/index";
 import { render, act, waitFor, fireEvent } from "@testing-library/react";
 import { Example, successfulRequest, successfulRequest2 } from "./utils";
 
-export const OptionsExample = ({ request }) => {
+export const OptionsExample = ({
+  request,
+}: {
+  request: () => Promise<any>;
+}) => {
   const [skip, setSkip] = useState(true);
-  const [data, { loading, error }] = useSimpleAsync<any, any>(request, {
+  const [data, { loading, error }] = useSimpleAsync(request, {
     skip,
   });
 

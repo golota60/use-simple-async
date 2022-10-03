@@ -40,7 +40,7 @@ test("refetches on internal function change", async () => {
   await waitFor(() => expect(getByText("data!")).toBeDefined());
 });
 
-const ChangeVarsExample = ({ request }) => {
+const ChangeVarsExample = ({ request }: { request: () => Promise<any> }) => {
   const [variables, setVariables] = useState({ variab: "some var" });
   const [data, { loading, error }] = useSimpleAsync<any, any>(request, {
     variables,

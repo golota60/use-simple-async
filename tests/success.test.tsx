@@ -13,7 +13,7 @@ test("correctly loads and resolves data", async () => {
   await waitFor(() => expect(getByText("data!")).toBeDefined());
 });
 
-const ChangePropsExample = ({ request }) => {
+const ChangePropsExample = ({ request }: { request: () => Promise<any> }) => {
   const [data, { loading, error }] = useSimpleAsync<any, any>(request);
 
   if (loading) {

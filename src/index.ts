@@ -5,24 +5,35 @@ interface FuncMeta {
   retry: () => void;
 }
 
+function useSimpleAsync<T, V>(
+  asyncFunc: (variables: V) => Promise<T>,
+  options?: { skip?: boolean; variables: V }
+): [T | undefined, FuncMeta];
+
+function useSimpleAsync<T>(
+  asyncFunc: (variables?: undefined) => Promise<T>,
+  options?: { skip?: boolean; variables?: undefined }
+): [T | undefined, FuncMeta];
+
 /**
  * A hook that allows to execute async functions with some helpful metadata.
  *
  * If the function passed as argument is redeclared on every render, it has to be wrapped with a useCallback
  */
-const useSimpleAsync = <T, V>(
+function useSimpleAsync<T, V>(
   asyncFunc: (variables?: V) => Promise<T>,
-  options: { skip?: boolean; variables?: V } = {}
-): [T | undefined, FuncMeta] => {
+  options?: { skip?: boolean; variables?: V }
+): [T | undefined, FuncMeta] {
   const [loading, setLoading] = useState<boolean>(false);
   const [data, setData] = useState<T>();
   const [error, setError] = useState<unknown>();
 
-  const { skip = false, variables = {} } = options;
+  const { skip, variables } = options || {};
 
   const cb = useCallback(async () => {
-    return await asyncFunc(options?.variables);
-  }, [options.variables]);
+    const asV = variables as V;
+    return await asyncFunc(asV); // pass variables even when unnecessary
+  }, [variables]);
 
   const exec = async () => {
     try {
@@ -40,10 +51,10 @@ const useSimpleAsync = <T, V>(
   };
 
   useEffect(() => {
-    if (!options.skip) {
+    if (!skip) {
       exec();
     }
-  }, [asyncFunc, options.skip]);
+  }, [asyncFunc, skip]);
 
   return [
     data,
@@ -55,6 +66,6 @@ const useSimpleAsync = <T, V>(
       },
     },
   ];
-};
+}
 
 export default useSimpleAsync;
