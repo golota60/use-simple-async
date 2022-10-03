@@ -14,7 +14,9 @@ test("correctly loads and resolves data", async () => {
 });
 
 const ChangePropsExample = ({ request }: { request: () => Promise<any> }) => {
-  const [data, { loading, error }] = useSimpleAsync<any, any>(request);
+  const [data, { loading, error }] = useSimpleAsync<any, any>(request, {
+    variables: {},
+  });
 
   if (loading) {
     return <div>loading</div>;
@@ -43,4 +45,23 @@ test("refetches on prop change", async () => {
   expect(loadingElem2).toBeDefined();
 
   await waitFor(() => expect(getByText("data!")).toBeDefined());
+});
+
+test("types sanity checks", () => {
+  // These are just to fail when typescript is off
+  const One = () => {
+    const [data, meta] = useSimpleAsync(() => new Promise(() => {}));
+  };
+  const Two = () => {
+    const [data2, meta2] = useSimpleAsync(
+      (arg1: string) => new Promise(() => {}),
+      { variables: "asd" }
+    );
+  };
+  const Three = () => {
+    const [data3, meta3] = useSimpleAsync(
+      (arg1: string) => new Promise(() => {}),
+      { variables: "123" }
+    );
+  };
 });

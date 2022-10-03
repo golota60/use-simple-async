@@ -43,11 +43,21 @@ function useSimpleAync<T, V>(
   functionToExec: (variables?: V) => Promise<T>,
   options?: { variables?: V; skip?: boolean }
 ): [T, { loading: string; error: unknown; retry: () => void }];
+
+function useSimpleAsync<T, V>(
+  asyncFunc: (variables: V) => Promise<T>,
+  options: { skip?: boolean; variables: V }
+): [T | undefined, FuncMeta];
+
+function useSimpleAsync<T>(
+  asyncFunc: (variables?: undefined) => Promise<T>,
+  options?: { skip?: boolean; variables?: undefined }
+): [T | undefined, FuncMeta];
 ```
 
 ### Refetching
 
-Hook will automatically refetch when you change the function you provide to `useSimpleAsync`.
+Hook will automatically refetch when you change the function reference you provide to `useSimpleAsync`.
 A simple recipe for e.g. fetching data with different variables would look like this:
 
 ```ts
@@ -56,14 +66,18 @@ import useSimpleAsync from "use-simple-async";
 const App = () => {
   const [variables, setVariables] = useState({ input: "hello" });
 
-  // Option one(recommended, easier): Let the hook handle variables
+  // Option one(recommended, easier, for simple uses): Let the hook handle variables
   const [data, { loading, error }] = useSimpleAsync(fetchSomeData, {
     variables,
   });
   // ---
 
-  // Option two: Handle everything yourself
-  const fetchData = useCallback(() => fetchSomeData(variables), [variables]); // useCallback is important here!
+  // Option two(for >1 arguments): Handle everything yourself
+  // useCallback is important here!
+  const fetchData = useCallback(
+    () => fetchSomeData(var1, var2, var3),
+    [var1, var2, var3]
+  );
   const [data, { loading, error }] = useSimpleAsync(fetchData);
   // ---
 

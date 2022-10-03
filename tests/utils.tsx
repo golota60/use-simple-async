@@ -2,8 +2,8 @@ import { jest } from "@jest/globals";
 import React from "react";
 import useSimpleAsync from "../src/index";
 
-export const Example = ({ request }) => {
-  const [data, { loading, error }] = useSimpleAsync<any, any>(request);
+export const Example = ({ request }: { request: () => Promise<any> }) => {
+  const [data, { loading, error }] = useSimpleAsync(request);
 
   if (loading) {
     return <div>loading</div>;

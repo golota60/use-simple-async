@@ -7,7 +7,7 @@ interface FuncMeta {
 
 function useSimpleAsync<T, V>(
   asyncFunc: (variables: V) => Promise<T>,
-  options?: { skip?: boolean; variables: V }
+  options: { skip?: boolean; variables: V }
 ): [T | undefined, FuncMeta];
 
 function useSimpleAsync<T>(

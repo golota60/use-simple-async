@@ -6,7 +6,9 @@ import { Example, successfulRequest, successfulRequest2 } from "./utils";
 
 const RefetchExample = () => {
   const [funcToUseState, setFuncToUseState] = useState(() => successfulRequest);
-  const [data, { loading, error }] = useSimpleAsync<any, any>(funcToUseState);
+  const [data, { loading, error }] = useSimpleAsync<any, any>(funcToUseState, {
+    variables: {},
+  });
 
   const handleChange = () => {
     setFuncToUseState(() => successfulRequest2);
