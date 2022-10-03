@@ -36,6 +36,15 @@ const App = () => {
 };
 ```
 
+### API
+
+```ts
+function useSimpleAync<T, V>(
+  functionToExec: (variables?: V) => Promise<T>,
+  options?: { variables?: V; skip?: boolean }
+): [T, { loading: string; error: unknown; retry: () => void }];
+```
+
 ### Refetching
 
 Hook will automatically refetch when you change the function you provide to `useSimpleAsync`.
@@ -71,15 +80,6 @@ const App = () => {
     </div>
   );
 };
-```
-
-### API
-
-```ts
-function useSimpleAync<T, V>(
-  functionToExec: (variables?: V) => Promise<T>,
-  options?: { variables?: V; skip?: boolean }
-): [T, { loading: string; error: unknown; retry: () => void }];
 ```
 
 ### Submitting errors
