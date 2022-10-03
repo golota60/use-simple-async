@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.5](https://github.com/golota60/use-simple-async/compare/v1.1.4...v1.1.5) (2022-10-03)
+
+
+### Features
+
+* add more typescript flexibility ([27b3b6a](https://github.com/golota60/use-simple-async/commit/27b3b6a15b53cf94f6834b5e4e298d0ad645faf9))
+
 ### [1.1.4](https://github.com/golota60/use-simple-async/compare/v1.1.3...v1.1.4) (2022-10-03)
 
 
