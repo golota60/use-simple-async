@@ -1,6 +1,6 @@
 # useSimpleAsync
 
-The simplest way to execute an asynchronous function in react
+The simplest(and lightest <1kB) way to execute an asynchronous function in react
 
 **NOTE: This library is not supposed to be an alternative for useSWR or react-query. It is simply a lighter version of them, if you don't need all the features that those libraries provide**
 
@@ -34,6 +34,15 @@ const App = () => {
 
   return <div>{data.map((e) => e.name)}</div>;
 };
+```
+
+### API
+
+```ts
+function useSimpleAync<T, V>(
+  functionToExec: (variables?: V) => Promise<T>,
+  options?: { variables?: V; skip?: boolean }
+): [T, { loading: string; error: unknown; retry: () => void }];
 ```
 
 ### Refetching
