@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.4](https://github.com/golota60/use-simple-async/compare/v1.1.3...v1.1.4) (2022-10-03)
+
+
+### Bug Fixes
+
+* **types:** enable strict mode ([daa349a](https://github.com/golota60/use-simple-async/commit/daa349a25b02d89db8dff5c69e774fd6875ab3b1))
+
 ### [1.1.3](https://github.com/golota60/use-simple-async/compare/v1.1.2...v1.1.3) (2022-10-03)
 
 ### [1.1.2](https://github.com/golota60/use-simple-async/compare/v1.1.1...v1.1.2) (2022-10-02)
