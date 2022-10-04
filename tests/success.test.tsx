@@ -70,7 +70,7 @@ test("types sanity checks", async () => {
       { variables: ["123"] }
     );
   };
-  const req = jest.fn(async (arg1: string, arg2: { innerArg: string }) => {
+  const req = jest.fn(async (arg1: string, arg2?: { innerArg: string }) => {
     return new Promise<string>((resolve) => {
       setTimeout(() => {
         resolve("data");
@@ -86,6 +86,13 @@ test("types sanity checks", async () => {
   };
   const { getByText } = render(<Five />);
   expect(getByText("loading")).toBeDefined();
+  const Six = () => {
+    const [data3, { loading }] = useSimpleAsync(req, {
+      variables: "123",
+    });
+    if (loading) return <div>loading</div>;
+    return <div>{data3}</div>;
+  };
 
   await waitFor(() => expect(getByText("data")).toBeDefined());
 });

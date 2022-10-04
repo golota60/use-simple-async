@@ -7,7 +7,7 @@ interface FuncMeta {
 
 function useSimpleAsync<T, V extends Array<any>>(
   asyncFunc: (...variables: V) => Promise<T>,
-  options: { skip?: boolean; variables: V }
+  options: { skip?: boolean; variables: V | V[0] }
 ): [T | undefined, FuncMeta];
 
 function useSimpleAsync<T, V>(
