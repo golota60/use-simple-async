@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.8](https://github.com/golota60/use-simple-async/compare/v1.1.7...v1.1.8) (2022-10-04)
+
+
+### Features
+
+* better type intellisense ([c8d75d3](https://github.com/golota60/use-simple-async/commit/c8d75d36971b00c11d4f46b62d444487332f00cd))
+
 ### [1.1.7](https://github.com/golota60/use-simple-async/compare/v1.1.6...v1.1.7) (2022-10-03)
 
 
