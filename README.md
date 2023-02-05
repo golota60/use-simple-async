@@ -4,7 +4,7 @@ The simplest(and lightest <1kB) way to execute an asynchronous function in react
 
 **NOTE: This library is not supposed to be an alternative for useSWR or react-query. It is simply a lighter version of them, if you don't need all the features that those libraries provide**
 
-Ever wanted to simply execute an async function without all the hassle and you don't want cache or anything like that? This is it.
+Ever wanted to simply execute an async function without all the hassle and you don't want cache or anything like that? This is it. Supplies both CJS and ESM builds.
 
 ### Installation
 
