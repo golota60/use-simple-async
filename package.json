@@ -1,10 +1,15 @@
 {
   "name": "use-simple-async",
-  "version": "1.1.8",
+  "version": "1.2.0",
   "author": "Szymon Wiszczuk <golota60@gmail.com>",
   "license": "MIT",
-  "main": "./index.js",
-  "types": "./index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "module": "dist/index.mjs",
+  "files": [
+    "README.md",
+    "dist"
+  ],
   "publishConfig": {
     "access": "public"
   },
@@ -18,10 +23,9 @@
     "use-async-resource"
   ],
   "scripts": {
-    "build": "rimraf dist && tsup src/index.ts --dts",
-    "build:release": "rimraf dist && tsup src/index.ts --dts --minify",
-    "release:patch": "yarn build:release && standard-version --release-as patch && cp package.json dist && cp README.md dist && yarn publish dist && rimraf dist",
-    "release:minor": "yarn build:release && standard-version --release-as minor && cp package.json dist && cp README.md dist && yarn publish dist && rimraf dist",
+    "build": "rimraf dist && tsup",
+    "release:patch": "yarn build && standard-version --release-as patch && yarn publish",
+    "release:minor": "yarn build && standard-version --release-as minor && yarn publish",
     "test": "jest"
   },
   "devDependencies": {
