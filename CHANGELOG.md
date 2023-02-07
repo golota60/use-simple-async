@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.3.1](https://github.com/golota60/use-simple-async/compare/v1.3.0...v1.3.1) (2023-02-07)
+
+
+### Features
+
+* better bundle treeshaking ([d00fd87](https://github.com/golota60/use-simple-async/commit/d00fd871b19747b01cabeb34ee40f619c6daab6b))
+* upgrade build script ([b23c73f](https://github.com/golota60/use-simple-async/commit/b23c73fcdd45ef5033e2913cd8ca26e4ef104edb))
+
 ## [1.2.0](https://github.com/golota60/use-simple-async/compare/v1.1.8...v1.2.0) (2023-02-05)
 
 ### [1.1.8](https://github.com/golota60/use-simple-async/compare/v1.1.7...v1.1.8) (2022-10-04)
