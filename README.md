@@ -1,6 +1,6 @@
 # useSimpleAsync
 
-The simplest(and lightest <1kB) way to execute an asynchronous function in react
+The simplest(and lightest with *less than 500 bytes gzipped*) way to execute an asynchronous function in react
 
 **NOTE: This library is not supposed to be an alternative for useSWR or react-query. It is simply a lighter version of them, if you don't need all the features that those libraries provide**
 
