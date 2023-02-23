@@ -50,24 +50,25 @@ const App = () => {
 ```ts
 function useSimpleAsync<T, V extends Array<any>>(
   asyncFunc: (...variables: V) => Promise<T>,
-  options: { skip?: boolean; variables: V }
+  options: { skip?: boolean; variables: V, useLayout?: boolean }
 ): [T | undefined, FuncMeta];
 
 function useSimpleAync<T, V>(
   functionToExec: (variables?: V) => Promise<T>,
-  options?: { variables?: V; skip?: boolean }
+  options?: { variables?: V; skip?: boolean, useLayout?: boolean }
 ): [T, { loading: string; error: unknown; retry: () => void }];
 
 function useSimpleAsync<T, V>(
   asyncFunc: (variables: V) => Promise<T>,
-  options: { skip?: boolean; variables: V }
+  options: { skip?: boolean; variables: V, useLayout?: boolean }
 ): [T | undefined, FuncMeta];
 
 function useSimpleAsync<T>(
   asyncFunc: (variables?: undefined) => Promise<T>,
-  options?: { skip?: boolean; variables?: undefined }
+  options?: { skip?: boolean; variables?: undefined, useLayout?: boolean }
 ): [T | undefined, FuncMeta];
 ```
+`useLayout: true` will execute your async function in `useLayoutEffect` instead of `useEffect`(default)
 
 ### Refetching
 

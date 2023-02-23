@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useLayoutEffect, useCallback } from "react";
 interface FuncMeta {
   loading: boolean;
   error: unknown;
@@ -7,17 +7,20 @@ interface FuncMeta {
 
 function useSimpleAsync<T, V extends Array<any>>(
   asyncFunc: (...variables: V) => Promise<T>,
-  options: { skip?: boolean; variables: V | V[0] }
+  options: { skip?: boolean; variables: V | V[0], useLayout?: boolean }
 ): [T | undefined, FuncMeta];
 
 function useSimpleAsync<T, V>(
   asyncFunc: (variables: V) => Promise<T>,
-  options: { skip?: boolean; variables: V }
+  options: {
+    skip?: boolean; variables: V,
+    useLayout?: boolean
+  }
 ): [T | undefined, FuncMeta];
 
 function useSimpleAsync<T>(
   asyncFunc: (variables?: undefined) => Promise<T>,
-  options?: { skip?: boolean; variables?: undefined }
+  options?: { skip?: boolean; variables?: undefined, useLayout?: boolean }
 ): [T | undefined, FuncMeta];
 
 /**
@@ -27,13 +30,13 @@ function useSimpleAsync<T>(
  */
 function useSimpleAsync<T, V>(
   asyncFunc: (variables?: V) => Promise<T>,
-  options?: { skip?: boolean; variables?: V }
+  options?: { skip?: boolean; variables?: V, useLayout?: boolean }
 ): [T | undefined, FuncMeta] {
   const [loading, setLoading] = useState<boolean>(false);
   const [data, setData] = useState<T>();
   const [error, setError] = useState<unknown>();
 
-  const { skip, variables } = options || {};
+  const { skip, variables, useLayout } = options || {};
 
   const cb = useCallback(async () => {
     return Array.isArray(variables)
@@ -56,7 +59,9 @@ function useSimpleAsync<T, V>(
     }
   };
 
-  useEffect(() => {
+  const handler = useLayout ? useLayoutEffect : useEffect;
+
+  handler(() => {
     if (!skip) {
       exec();
     }
