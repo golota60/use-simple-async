@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.4.1](https://github.com/golota60/use-simple-async/compare/v1.4.0...v1.4.1) (2023-03-07)
+
+
+### Features
+
+* set loading to false on error ([003ccb3](https://github.com/golota60/use-simple-async/commit/003ccb30b7c3057badd13e67e5dd4b477eb1029a))
+
 ## [1.4.0](https://github.com/golota60/use-simple-async/compare/v1.3.1...v1.4.0) (2023-02-23)
 
 
