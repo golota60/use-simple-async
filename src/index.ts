@@ -7,20 +7,21 @@ interface FuncMeta {
 
 function useSimpleAsync<T, V extends Array<any>>(
   asyncFunc: (...variables: V) => Promise<T>,
-  options: { skip?: boolean; variables: V | V[0], useLayout?: boolean }
+  options: { skip?: boolean; variables: V | V[0]; useLayout?: boolean }
 ): [T | undefined, FuncMeta];
 
 function useSimpleAsync<T, V>(
   asyncFunc: (variables: V) => Promise<T>,
   options: {
-    skip?: boolean; variables: V,
-    useLayout?: boolean
+    skip?: boolean;
+    variables: V;
+    useLayout?: boolean;
   }
 ): [T | undefined, FuncMeta];
 
 function useSimpleAsync<T>(
   asyncFunc: (variables?: undefined) => Promise<T>,
-  options?: { skip?: boolean; variables?: undefined, useLayout?: boolean }
+  options?: { skip?: boolean; variables?: undefined; useLayout?: boolean }
 ): [T | undefined, FuncMeta];
 
 /**
@@ -30,7 +31,7 @@ function useSimpleAsync<T>(
  */
 function useSimpleAsync<T, V>(
   asyncFunc: (variables?: V) => Promise<T>,
-  options?: { skip?: boolean; variables?: V, useLayout?: boolean }
+  options?: { skip?: boolean; variables?: V; useLayout?: boolean }
 ): [T | undefined, FuncMeta] {
   const [loading, setLoading] = useState<boolean>(false);
   const [data, setData] = useState<T>();
@@ -52,6 +53,7 @@ function useSimpleAsync<T, V>(
     } catch (e: any) {
       setError(e);
       setData(undefined);
+      setLoading(false);
       // eslint-disable-next-line no-console
       console.error("Error while resolving async function", e);
     } finally {
